@@ -11,22 +11,11 @@ curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 sudo apt install nodejs
 ```
 
-3. Install MQTT and command line tools
-
+Follow this order to run broker, subscriber and publisher
 ```
-sudo npm install mqtt --save && sudo npm install mqtt -g
-```
-
-4. Install Mosca broker
-
-```
-sudo npm install mosca --save && sudo npm install mosca -g
+node broker.js
+node sub.js
+node pub.js
 ```
 
-5. Install MongDB driver for node
-
-```
-sudo npm install mongodb --save && sudo npm install mongodb -g
-```
-
-Example how to run https://i.snipboard.io/jIxg0O.jpg
+Example https://i.snipboard.io/jIxg0O.jpg
