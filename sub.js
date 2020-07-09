@@ -1,32 +1,37 @@
-const MongoClient = require('mongodb').MongoClient;
-const dbClient = new MongoClient('mongodb+srv://sd2020:sd2020@sd2020.vdmoy.mongodb.net/marcos?retryWrites=true&w=majority', {
+const MongoClient = require("mongodb").MongoClient;
+const dbClient = new MongoClient(
+  "mongodb+srv://sd2020:sd2020@sd2020.vdmoy.mongodb.net/sd?retryWrites=true&w=majority",
+  {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useMongoClient: true,
     poolSize: 2,
     promiseLibrary: global.Promise,
-    replicaSet: true
-});
+    replicaSet: true,
+  }
+);
 
-var mqtt = require('mqtt')
+var mqtt = require("mqtt");
 
-var mqttClient = mqtt.connect('mqtt://test.mosquitto.org')
-var topic = 'sd2020js2php'
+var mqttClient = mqtt.connect("mqtt://localhost:1234");
+var topic = "sd2020js2php";
 
 dbClient.connect(() => {
-    const collection = dbClient.db('marcos').collection('marcos');
+  const collection = dbClient.db("sd").collection("sd");
 
-    mqttClient.on('message', (topic, message) => {
-        message = message.toString()
-        console.log(message)
+  mqttClient.on("message", (topic, message) => {
+    message = message.toString();
+    message = parseFloat(message);
 
-        var json = {
-            messageFromBroker: message
-        }
-        collection.insertOne(json)
-    })
-})
+    console.log(message);
 
-mqttClient.on('connect', () => {
-    mqttClient.subscribe(topic)
-})
+    var json = {
+      messageFromBroker: message,
+    };
+    collection.insertOne(json);
+  });
+});
+
+mqttClient.on("connect", () => {
+  mqttClient.subscribe(topic);
+});
